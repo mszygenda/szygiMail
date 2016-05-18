@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>szygiMail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <script type="application/javascript"  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+
+    <!-- vendor:css -->
+    <!-- endinject -->
+
+    <!-- app:css -->
+    <!-- endinject -->
+    <script type="application/javascript" src="javascripts/app.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+<body ng-app="emailStub">
+
+<header data-global-nav></header>
+<div class="container" ng-controller="EmailController">
+
+    <h1 style="text-align: center">
+        <img src="images/email-icon.png" width="64" height="64" /> szygiMail
+    </h1>
+    <div class="row" ng-if="loggedIn">
+        <div class="col-md-4"></div>
+        <div class="col-md-8 text-right">Welcome back {{credentials.email}}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form class="form-signin" ng-if="!loggedIn">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" ng-model="credentials.email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" ng-click="login(credentials.email)" type="submit">Sign in</button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+        <div ng-if="loggedIn">
+        <div ng-if="!token">
+            <h3 style="text-align: center">
+            There are no new emails. Do you want to <a ng-click="checkEmails()" href="#">refresh</a>?
+            </h3>
+        </div>
+        <table ng-if="!emailExpanded && token" class="table table-condensed">
+            <thead>
+            <tr>
+                <th>Subject</th>
+                <th>From</th>
+                <th>Received</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><a ng-click="expandEmail()">{{subject}}</a></td>
+                <td>{{from}}</td>
+                <td>Just now</td>
+            </tr>
+            </tbody>
+        </table>
+        <div ng-if="emailExpanded">
+            <h1>{{subject}}</h1>
+            <h2>From: {{from}}</h2>
+            Dear Mr <BR><BR>An account has been created for you on the Criminal Justice Common Platform service, however, you need to finish the final set-up steps by creating a password. Your username has already been assigned to you, and this is the email address your Administrator provided during the initial registration process.<BR><BR>It should take no longer than five minutes to finish setting up your account and once done you will be able to sign in and use the Common Platform services that have been assigned to you.<BR><BR>To complete registration of your account, you need to go to https://poa.am.shr.cpp.gov.uk/users.html#/register/{{token}} or by <a href='https://poa.am.shr.cpp.gov.uk/users.html#/register/{{token}}' >clicking on this link</a><BR><BR>If you require any assistance during the process, please contact our administrator or the Business Support Team. <BR>Please do not reply to this email as it has been sent from an unmanned email address. <BR><BR><BR>The Common Platform Business Support Team <BR>Help Desk Number: 020 3334 2999 <BR>Email: CrimeITSupport@hmcts.gsi.gov..uk<BR>
+        </div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+
+</div>
+
+<div data-footer-directive></div>
+<!-- vendor:js -->
+<!-- endinject -->
+
+<!-- config:js -->
+<!-- endinject -->
+
+<!-- app:js -->
+<!-- endinject -->
+
+</body>
+</html>

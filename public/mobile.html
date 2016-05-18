@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>szygiPhone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <script type="application/javascript"  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+
+    <!-- vendor:css -->
+    <!-- endinject -->
+
+    <!-- app:css -->
+    <!-- endinject -->
+    <script type="application/javascript" src="javascripts/app.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+<body ng-app="emailStub">
+
+<header data-global-nav></header>
+<div class="container" ng-controller="MobileController">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div style="text-align: center; background-position: center; background-image:url('images/phone2.png'); background-size: 312.5px 607.5px; width: 312.5px; height: 607.5px;">
+                <div style="position:absolute; left:50px; top: 100px; font-weight: bold; color: white; font-size: 20pt">
+                <p ng-if="otp">
+                Your OTP is: {{otp}}
+                    </p>
+                    <p ng-if="!otp">
+                        No text messages
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+<div class="content-wrapper">
+
+</div>
+
+<div data-footer-directive></div>
+<!-- vendor:js -->
+<!-- endinject -->
+
+<!-- config:js -->
+<!-- endinject -->
+
+<!-- app:js -->
+<!-- endinject -->
+
+</body>
+</html>
