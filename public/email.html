@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <script type="application/javascript"  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script type="application/javascript"  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-sanitize.min.js"></script>
 
     <!-- vendor:css -->
     <!-- endinject -->
@@ -56,31 +57,32 @@
         <div class="col-md-4"></div>
     </div>
         <div ng-if="loggedIn">
-        <div ng-if="!token">
+        <div ng-if="emails.length == 0">
             <h3 style="text-align: center">
             There are no new emails. Do you want to <a ng-click="checkEmails()" href="#">refresh</a>?
             </h3>
         </div>
-        <table ng-if="!emailExpanded && token" class="table table-condensed">
+            <table ng-if="!expandedEmail && emails.length > 0" class="table table-condensed">
             <thead>
             <tr>
                 <th>Subject</th>
                 <th>From</th>
                 <th>Received</th>
+                <th><img ng-click="checkEmails()" style="width: 16px; height: 16px" src="images/refresh-icon.png" /></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody ng-repeat="email in emails">
             <tr>
-                <td><a ng-click="expandEmail()">{{subject}}</a></td>
-                <td>{{from}}</td>
+                <td><a ng-click="expandEmail(email)">{{email.Subject}}</a></td>
+                <td>{{email.From}}</td>
                 <td>Just now</td>
             </tr>
             </tbody>
         </table>
-        <div ng-if="emailExpanded">
-            <h1>{{subject}}</h1>
-            <h2>From: {{from}}</h2>
-            Dear Mr <BR><BR>An account has been created for you on the Criminal Justice Common Platform service, however, you need to finish the final set-up steps by creating a password. Your username has already been assigned to you, and this is the email address your Administrator provided during the initial registration process.<BR><BR>It should take no longer than five minutes to finish setting up your account and once done you will be able to sign in and use the Common Platform services that have been assigned to you.<BR><BR>To complete registration of your account, you need to go to https://poa.am.shr.cpp.gov.uk/users.html#/register/{{token}} or by <a href='https://poa.am.shr.cpp.gov.uk/users.html#/register/{{token}}' >clicking on this link</a><BR><BR>If you require any assistance during the process, please contact our administrator or the Business Support Team. <BR>Please do not reply to this email as it has been sent from an unmanned email address. <BR><BR><BR>The Common Platform Business Support Team <BR>Help Desk Number: 020 3334 2999 <BR>Email: CrimeITSupport@hmcts.gsi.gov..uk<BR>
+        <div ng-if="expandedEmail">
+            <h1>{{expandedEmail.Subject}} <img ng-click="closeEmail()" src="images/close-icon.png" style="width: 16px; height: 16px"/></h1>
+            <h2>From: {{expandedEmail.From}}</h2>
+            <p ng-bind-html="expandedEmail.Body"></p>
         </div>
     </div>
 </div>

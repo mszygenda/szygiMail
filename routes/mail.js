@@ -13,6 +13,16 @@ router.post('/', function (req, res) {
     });
 });
 
+router.get('/', function (req, res) {
+    return emailService.getAllEmails(email).then(function (emails) {
+        res.send(emails);
+    }, function (e) {
+        res.send({
+            message: "Failed to retrieve emails" + e
+        })
+    })
+});
+
 /* GET users listing. */
 router.get('/otp', function(req, res, next) {
     //var email = req.session.email;

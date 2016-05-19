@@ -1,4 +1,4 @@
-var app = angular.module("emailStub", []);
+var app = angular.module("emailStub", ['ngSanitize']);
 
 app.factory('emailService', function ($http) {
     return {
@@ -16,14 +16,21 @@ app.factory('emailService', function ($http) {
             return $http.get('mail/registration').then(function (response) {
                 return response.data.token;
             });
+        },
+        getAllEmails: function () {
+            return $http.get('mail/').then(function (response) {
+                return response.data;
+            })
         }
     }
 });
 
-app.controller('EmailController', function ($scope, $timeout, emailService) {
+app.controller('EmailController', function ($scope, $timeout, $sce, emailService) {
     $scope.from = "MOJ";
     $scope.subject = "Complete your registration";
     $scope.credentials = {};
+    $scope.emails = [];
+
     $scope.login = function (email) {
         emailService.login(email).then(function () {
             $scope.loggedIn = true;
@@ -35,14 +42,23 @@ app.controller('EmailController', function ($scope, $timeout, emailService) {
     };
 
     $scope.checkEmails = function () {
+        emailService.getAllEmails().then(function (emails) {
+            if (!emails instanceof Array) {
+                $scope.emails = []
+            } else {
+                $scope.emails = emails;
+            }
+        });
         console.log("Check emails");
-        emailService.getRegistrationToken().then(function (token) {
-            $scope.token = token;
-        })
     }
 
-    $scope.expandEmail = function () {
-        $scope.emailExpanded = true;
+    $scope.expandEmail = function (email) {
+        $sce.trustAsHtml(email.Body);
+        $scope.expandedEmail = email;
+    }
+
+    $scope.closeEmail = function () {
+        $scope.expandedEmail = null;
     }
 
 });
