@@ -6,6 +6,11 @@ It's able to extract OTP Notification, Password Reset, User registration, User R
 
 There's a fake email client and fake mobile phone for that purposes.
 
+
+[![Email Mock](docs/mail.png)]
+
+[![Mobile Mock](docs/mobile.png)]
+
 #DEPENDENCIES
 
 It's a node application so you need to install npm and all project dependencies first.
