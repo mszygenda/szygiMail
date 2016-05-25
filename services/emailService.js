@@ -21,7 +21,7 @@ module.exports = function () {
 
     this.getUserRegistrationToken = function (userEmail) {
         return getLatestEmail(userEmail, 'Register Your Common Platform Account').then(function (email) {
-            var tokenRegex = /.*need to go to .*\/(.*) or by.*/
+            var tokenRegex = /.*#\/register\/(.*)'/
             var tokenMatches = tokenRegex.exec(email.Body);
 
             if (tokenMatches) {
@@ -62,42 +62,20 @@ module.exports = function () {
                 return email;
             }
             var token = extractToken(email.Body);
-            var resetPasswordLink = "https://poa.am.shr.cpp.gov.uk/users.html#/create-new-password/" + token;
+            var resetPasswordLink = "https://poa.am.shr.cpp.gov.uk/users.html#/create-new-password";
 
-            email.Body = email.Body.replace(/http:\/\/www.resetpassword\.co\.uk\/\S*|http:\/\/www\.resetpassword\.com/g, resetPasswordLink);
+            email.Body = email.Body.replace(/https:\/\/poa.am.shr.cpp.gov.uk\/users.html#\/register/g, resetPasswordLink);
 
             return email;
         });
     };
 
     this.getUserRegistrationMail = function (userEmail) {
-        return getLatestEmail(userEmail, 'Register Your Common Platform Account').then(function (email) {
-            if (!email.Body) {
-                return email;
-            }
-
-            var token = extractToken(email.Body)
-            return {
-                To: email.To,
-                From: email.From,
-                Subject: email.Subject,
-                Body: "Dear Mr Mateusz Szygenda <BR><BR>An account has been created for you on the Criminal Justice Common Platform service, however, you need to finish the final set-up steps by creating a password. Your username has already been assigned to you, and this is the email address your Administrator provided during the initial registration process.<BR><BR>It should take no longer than five minutes to finish setting up your account and once done you will be able to sign in and use the Common Platform services that have been assigned to you.<BR><BR>To complete registration of your account, you need to go to https://poa.am.shr.cpp.gov.uk/users.html#/register/" + token + " or by <a href='https://poa.am.shr.cpp.gov.uk/users.html#/register/" + token + "' >clicking on this link</a><BR><BR>If you require any assistance during the process, please contact our administrator or the Business Support Team. <BR>Please do not reply to this email as it has been sent from an unmanned email address. <BR><BR><BR>The Common Platform Business Support Team <BR>Help Desk Number: 020 3334 2999 <BR>Email: CrimeITSupport@hmcts.gsi.gov..uk<BR>"
-            }
-        })
+        return getLatestEmail(userEmail, 'Register Your Common Platform Account');
     };
 
     this.getReregisterMail = function (userEmail) {
-        return getLatestEmail(userEmail, 'Re-registration of your Common Platform Account').then(function (email) {
-            if (!email.Body) {
-                return email;
-            }
-            var token = extractToken(email.Body);
-            var registerLink = "https://poa.am.shr.cpp.gov.uk/users.html#/register/" + token;
-
-            email.Body = email.Body.replace(/http:\/\/www.resetpassword\.co\.uk\/\S*|http:\/\/www\.resetpassword\.com/g, registerLink);
-
-            return email;
-        });
+        return getLatestEmail(userEmail, 'Re-registration of your Common Platform Account');
     };
 
     this.getAllEmails = function (userEmail) {
