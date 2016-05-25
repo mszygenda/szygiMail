@@ -42,6 +42,13 @@ Suggested approach is to add appropriate entries to /etc/hosts
 
     127.0.0.1 mymail.com mobilephone.com szygimail.com szygiphone.com
 
+Then you can access the server via
+
+    http://szygimail.com/email.html
+    http://szygiphone.com/mobile.html
+
+Which makes it even more real :-)
+
 #Usage
 
 Once you've started the server you can visit szygiMail by entering: http://localhost/email.html in your browser.
@@ -83,3 +90,14 @@ To access those servers http client uses HaSS HTTP proxy. Disable it if you don'
 It's an expressjs application which offers simple rest interface to pull latest emails from ISG stub.
 
 On the frontend it's an angular app which calls those REST Endpoints.
+
+#Quirks
+
+###Reset password email
+ISG currently doesn't support different URLs for Registration/Reset-Password mails. It's using the same base URL which points to user registration in POA. To overcome this limitation on the backend side we fix the 'reset-password' email content by putting the right base URL.
+
+This workaround is done for integration environment so if you plan to use it on PR1 remember to update it accordingly (and Email Stub IP of course)
+
+###Registration email
+
+There's an issue in ISG templating that if Full name of a user is too long the registration link gets malformed. Bas can provide more details if needed. Keep it short or introduce workaround like the one above.
