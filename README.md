@@ -103,7 +103,8 @@ On the frontend it's an angular app which calls those REST Endpoints.
 
 #Quirks
 
-###Reset password email
+###Reset password email - FIXED (workaround removed)
+
 ISG currently doesn't support different URLs for Registration/Reset-Password mails. It's using the same base URL which points to user registration in POA. To overcome this limitation on the backend side we fix the 'reset-password' email content by putting the right base URL.
 
 This workaround is done for integration environment so if you plan to use it on PR1 remember to update it accordingly (and Email Stub IP of course)

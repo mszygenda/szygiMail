@@ -75,17 +75,7 @@ module.exports = function () {
     };
 
     this.getResetPasswordMail = function (userEmail) {
-        return getIdpLatestEmail(userEmail, 'Reset Your Common Platform Account').then(function (email) {
-            if (!email.Body) {
-                return email;
-            }
-            var token = extractToken(email.Body);
-            var resetPasswordLink = "https://poa.am.shr.cpp.gov.uk/users.html#/create-new-password";
-
-            email.Body = email.Body.replace(/https:\/\/poa.am.shr.cpp.gov.uk\/users.html#\/register/g, resetPasswordLink);
-
-            return email;
-        });
+        return getIdpLatestEmail(userEmail, 'Reset Your Common Platform Account');
     };
 
     this.getUserRegistrationMail = function (userEmail) {
