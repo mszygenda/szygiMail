@@ -4,11 +4,11 @@ It's a simple frontend app for ISG Email Stub.
 
 It's able to extract IDP emails like:
 
-OTP Notification, Password Reset, User registration, User Re-registration emails
+    OTP Notification, Password Reset, User registration, User Re-registration emails
 
 And IDAM notification emails:
 
-New platform administrator created, New support admin created, Inform List updated email
+    New platform administrator created, New support admin created, Inform List updated email
 
 and present them in demo-able way :-) in a Web Browser.
 
@@ -79,6 +79,7 @@ All configurable elements sits in:
 
     config/int.js - for integration environment
     config/pr1.js - for pr1 environment
+
 
     module.exports = {
         idpEmailMockService: {
