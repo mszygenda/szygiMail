@@ -5,22 +5,38 @@ var core = require('../common/core.js');
 var Q = require('q');
 
 module.exports = function () {
-    var getLatestEmail = function (userEmail, subject) {
+    var getIdpLatestEmail = function (userEmail, subject) {
+        return getLatestEmail(core.getConfig().idpEmailMockService.url, userEmail, subject).then(function (response) {
+            return JSON.parse(response.body);
+        });
+    };
+
+    var getIdamLatestEmail = function (userEmail, subject) {
+        return getLatestEmail(core.getConfig().idamEmailMockService.url, userEmail, subject).then(function (response) {
+            var newlinesRegex = /\n/g
+
+            // Workaround for newline not properly escaped by IDP Email Stub
+            // Since the message is going to be displayed as HTML we're replacing them with <br />
+            return JSON.parse(
+                response.body.replace(newlinesRegex, "<br />")
+            )
+        })
+    };
+
+    var getLatestEmail = function (emailMockBaseUrl, userEmail, subject) {
         var GET_LAST_EMAIL = '/entry-point/getlastemail/';
 
         return http.getHttpClient().sendRequest({
-            url: core.getConfig().idpEmailMockService.url + GET_LAST_EMAIL + userEmail,
+            url: emailMockBaseUrl + GET_LAST_EMAIL + userEmail,
             qs: {
                 subject: subject
             },
             method: 'GET'
-        }).then(function (response) {
-            return JSON.parse(response.body)
         });
-    };
+    }
 
     this.getUserRegistrationToken = function (userEmail) {
-        return getLatestEmail(userEmail, 'Register Your Common Platform Account').then(function (email) {
+        return getIdpLatestEmail(userEmail, 'Register Your Common Platform Account').then(function (email) {
             var tokenRegex = /.*#\/register\/(.*)'/
             var tokenMatches = tokenRegex.exec(email.Body);
 
@@ -33,7 +49,7 @@ module.exports = function () {
     };
 
     this.getOtpCode = function (userEmail) {
-        return getLatestEmail(userEmail, 'OTP notification').then(function (email) {
+        return getIdpLatestEmail(userEmail, 'OTP notification').then(function (email) {
             var otpCodeRegex = /Your OTP is: \W*(.*)/
             var otpMatches = otpCodeRegex.exec(email.Body);
 
@@ -57,7 +73,7 @@ module.exports = function () {
     };
 
     this.getResetPasswordMail = function (userEmail) {
-        return getLatestEmail(userEmail, 'Reset Your Common Platform Account').then(function (email) {
+        return getIdpLatestEmail(userEmail, 'Reset Your Common Platform Account').then(function (email) {
             if (!email.Body) {
                 return email;
             }
@@ -71,18 +87,33 @@ module.exports = function () {
     };
 
     this.getUserRegistrationMail = function (userEmail) {
-        return getLatestEmail(userEmail, 'Register Your Common Platform Account');
+        return getIdpLatestEmail(userEmail, 'Register Your Common Platform Account');
     };
 
     this.getReregisterMail = function (userEmail) {
-        return getLatestEmail(userEmail, 'Re-registration of your Common Platform Account');
+        return getIdpLatestEmail(userEmail, 'Re-registration of your Common Platform Account');
+    };
+
+    this.getNewCommonPlatformAdministratorCreatedMail = function (userEmail) {
+        return getIdamLatestEmail(userEmail, 'New Common Platform Administrator Created');
+    };
+
+    this.getNewCommonPlatformSupportAdministratorCreatedMail = function (userEmail) {
+        return getIdamLatestEmail(userEmail, 'New Common Platform Support Administrator Created');
+    };
+
+    this.getInformListUpdatedMail = function (userEmail) {
+        return getIdamLatestEmail(userEmail, 'Your Common Platform Organisation Notification List has changed');
     };
 
     this.getAllEmails = function (userEmail) {
         return Q.all([
             this.getResetPasswordMail(userEmail),
             this.getReregisterMail(userEmail),
-            this.getUserRegistrationMail(userEmail)
+            this.getUserRegistrationMail(userEmail),
+            this.getNewCommonPlatformAdministratorCreatedMail(userEmail),
+            this.getNewCommonPlatformSupportAdministratorCreatedMail(userEmail),
+            this.getInformListUpdatedMail(userEmail)
         ]).then(function (emails) {
             console.log(emails)
             return emails.filter(function (email) {

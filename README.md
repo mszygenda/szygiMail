@@ -2,7 +2,15 @@
 
 It's a simple frontend app for ISG Email Stub.
 
-It's able to extract OTP Notification, Password Reset, User registration, User Re-registration emails and present them in demo-able way :-) in a Web Browser.
+It's able to extract IDP emails like:
+
+OTP Notification, Password Reset, User registration, User Re-registration emails
+
+And IDAM notification emails:
+
+New platform administrator created, New support admin created, Inform List updated email
+
+and present them in demo-able way :-) in a Web Browser.
 
 There's a fake email client and fake mobile phone for that purposes.
 
@@ -20,11 +28,13 @@ It's a node application so you need to install npm and all project dependencies 
 
 #STARTING SERVER
 
-    PORT=80 npm start
+    TEST_ENV=int PORT=80 npm start
 
 If you're using mac or *nix system you can just execute go script (it'll install dependencies and everything)
 
-    ./go
+    ./go [ENVIRONMENT]
+
+Where `ENVIRONMENT` is 'int' or 'pr1'
 
 #URLs
 
@@ -43,19 +53,18 @@ Suggested approach is to add appropriate entries to /etc/hosts
 
 All configurable elements sits in:
 
-common/core.js
-
+    config/int.js - for integration environment
+    config/pr1.js - for pr1 environment
 
     module.exports = {
-        getConfig: function () {
-            return {
-                idpEmailMockService: {
-                    url: "http://10.124.107.11:8888"
-                },
-                httpClient: {
-                    proxy: "http://10.224.23.8:3128"
-                }
-            }
+        idpEmailMockService: {
+            url: "http://10.124.107.11:8888"
+        },
+        idamEmailMockService: {
+            url: "http://10.124.10.93:5025"
+        },
+        httpClient: {
+            proxy: "http://10.224.23.8:3128"
         }
     }
 
