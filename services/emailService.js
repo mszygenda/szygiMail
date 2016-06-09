@@ -7,7 +7,9 @@ var Q = require('q');
 module.exports = function () {
     var getIdpLatestEmail = function (userEmail, subject) {
         return getLatestEmail(core.getConfig().idpEmailMockService.url, userEmail, subject).then(function (response) {
-            return JSON.parse(response.body);
+            // Workaround for issue in ISG Email Stub where dots are sometimes duplicated (due to that registration link gets broken)
+            // Bus to provide more details
+            return JSON.parse(response.body.replace(/\.\./g, '.'));
         });
     };
 
