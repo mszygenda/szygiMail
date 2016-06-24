@@ -52,7 +52,7 @@ module.exports = function () {
 
     this.getOtpCode = function (userEmail) {
         return getIdpLatestEmail(userEmail, 'OTP notification').then(function (email) {
-            var otpCodeRegex = /Your OTP is: \W*(.*)/
+            var otpCodeRegex = /Your Common Platform one-time passcode is \W*(.*)/
             var otpMatches = otpCodeRegex.exec(email.Body);
 
             if (otpMatches) {
