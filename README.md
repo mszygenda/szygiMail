@@ -39,6 +39,25 @@ If you're using mac or *nix system you can just execute go script (it'll install
 
 Where `ENVIRONMENT` is 'int' or 'pr1'
 
+### WINDOWS Machines
+
+You'll have to install two tools: `Git For Windows` and `NodeJS for Windows`
+
+https://nodejs.org/en/download/
+
+https://git-scm.com/download/win
+
+During installation of GIT make sure it'll include Bash as well.
+
+Once installed open program "Git Bash" (which will be installed with git) as an administrator (right click on icon: Run as Admin)
+
+And type those commands
+
+    cd /c
+    git clone https://github.com/mszygenda/szygiMail
+    cd szygiMail
+    ./go-nosudo
+
 #URLs
 
 Once application starts up it's available at these addresses:
