@@ -58,6 +58,8 @@ And type those commands
     cd szygiMail
     ./go-nosudo
 
+#### NOTICE: You have to have access to HASS Http proxy to get the stub working correctly (http://10.224.23.8:3128)
+
 #URLs
 
 Once application starts up it's available at these addresses:
