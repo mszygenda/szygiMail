@@ -109,6 +109,7 @@ module.exports = function () {
             getIdamLatestEmail(userEmail, 'New Common Platform User Created'),
             getIdamLatestEmail(userEmail, 'Organisation re-registered on Common Platform'),
             getIdamLatestEmail(userEmail, 'Organisation deregistered on Common Platform'),
+            getIdamLatestEmail(userEmail, 'Common Platform User Deleted'),
             getIdamLatestEmail(userEmail, 'Account deregistered on Common Platform'),
             getIdamLatestEmail(userEmail, 'Change of name on your Common Platform account')
         ]).then(function (emails) {
