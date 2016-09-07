@@ -105,7 +105,12 @@ module.exports = function () {
             this.getUserRegistrationMail(userEmail),
             this.getNewCommonPlatformAdministratorCreatedMail(userEmail),
             this.getNewCommonPlatformSupportAdministratorCreatedMail(userEmail),
-            this.getInformListUpdatedMail(userEmail)
+            this.getInformListUpdatedMail(userEmail),
+            getIdamLatestEmail(userEmail, 'New Common Platform User Created'),
+            getIdamLatestEmail(userEmail, 'Organisation re-registered on Common Platform'),
+            getIdamLatestEmail(userEmail, 'Organisation deregistered on Common Platform'),
+            getIdamLatestEmail(userEmail, 'Account deregistered on Common Platform'),
+            getIdamLatestEmail(userEmail, 'Change of name on your Common Platform account')
         ]).then(function (emails) {
             console.log(emails)
             return emails.filter(function (email) {
