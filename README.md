@@ -96,21 +96,21 @@ If you want to change the username simply refresh szygiMail and you'll be again 
 
 #Configuration
 
+A ssh tunnel needs to be setUp depending on the environment to be used:
+dev: 10.129.1.72
+nft:10.131.1.72
+nftpr1: 10.131.2.72
+prod: 10.133.1.72
+
 All configurable elements sits in:
 
-    config/int.js - for integration environment
-    config/pr1.js - for pr1 environment
+    config/nft.js - for integration environment
+    config/nftpr1.js - for pr1 environment
 
 
     module.exports = {
-        idpEmailMockService: {
-            url: "http://10.124.107.11:8888"
-        },
-        idamEmailMockService: {
+        emailMockService: {
             url: "http://10.124.10.93:5025"
-        },
-        httpClient: {
-            proxy: "http://10.224.23.8:3128"
         }
     }
 

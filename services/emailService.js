@@ -1,26 +1,21 @@
 'use strict';
 
-var http = require('../common/http.js');
+var http = require('../common/httpClient.js');
 var core = require('../common/core.js');
 var Q = require('q');
 
 module.exports = function () {
-    var getIdpLatestEmail = function (userEmail, subject) {
-        return getLatestEmail(core.getConfig().idpEmailMockService.url, userEmail, subject).then(function (response) {
-            // Workaround for issue in ISG Email Stub where dots are sometimes duplicated (due to that registration link gets broken)
-            // Bus to provide more details
-            return JSON.parse(response.body.replace(/\.\./g, '.'));
-        });
-    };
-
     var getIdamLatestEmail = function (userEmail, subject) {
-        return getLatestEmail(core.getConfig().idamEmailMockService.url, userEmail, subject).then(function (response) {
-            var newlinesRegex = /\n/g
+        return getLatestEmail(core.getConfig().emailMockService.url, userEmail, subject).then(function (response) {
+            var newlinesRegex = /\n/g;
+            var doubleDots = /\.\./g;
+            var result = response.body.replace(/\.\./g, '.');
+
 
             // Workaround for newline not properly escaped by IDP Email Stub
             // Since the message is going to be displayed as HTML we're replacing them with <br />
             return JSON.parse(
-                response.body.replace(newlinesRegex, "<br />")
+                result.replace(newlinesRegex, "<br />")
             )
         })
     };
@@ -28,7 +23,7 @@ module.exports = function () {
     var getLatestEmail = function (emailMockBaseUrl, userEmail, subject) {
         var GET_LAST_EMAIL = '/entry-point/getlastemail/';
 
-        return http.getHttpClient().sendRequest({
+        return http.sendRequest({
             url: emailMockBaseUrl + GET_LAST_EMAIL + userEmail,
             qs: {
                 subject: subject
@@ -38,7 +33,7 @@ module.exports = function () {
     }
 
     this.getUserRegistrationToken = function (userEmail) {
-        return getIdpLatestEmail(userEmail, 'Register Your Common Platform Account').then(function (email) {
+        return getIdamLatestEmail(userEmail, 'Register Your Common Platform Account').then(function (email) {
             var tokenRegex = /.*#\/register\/(.*)'/
             var tokenMatches = tokenRegex.exec(email.Body);
 
@@ -51,7 +46,7 @@ module.exports = function () {
     };
 
     this.getOtpCode = function (userEmail) {
-        return getIdpLatestEmail(userEmail, 'OTP notification').then(function (email) {
+        return getIdamLatestEmail(userEmail, 'OTP notification').then(function (email) {
             var otpCodeRegex = /Your Common Platform one-time passcode is \W*(.*)/
             var otpMatches = otpCodeRegex.exec(email.Body);
 
@@ -75,15 +70,15 @@ module.exports = function () {
     };
 
     this.getResetPasswordMail = function (userEmail) {
-        return getIdpLatestEmail(userEmail, 'Reset Your Common Platform Account');
+        return getIdamLatestEmail(userEmail, 'Reset Your Common Platform Account');
     };
 
     this.getUserRegistrationMail = function (userEmail) {
-        return getIdpLatestEmail(userEmail, 'Register Your Common Platform Account');
+        return getIdamLatestEmail(userEmail, 'Register Your Common Platform Account');
     };
 
     this.getReregisterMail = function (userEmail) {
-        return getIdpLatestEmail(userEmail, 'Re-registration of your Common Platform Account');
+        return getIdamLatestEmail(userEmail, 'Re-registration of your Common Platform Account');
     };
 
     this.getNewCommonPlatformAdministratorCreatedMail = function (userEmail) {
