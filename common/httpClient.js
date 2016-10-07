@@ -14,7 +14,7 @@ module.exports = {
         request(
             extend({
                 rejectUnauthorized: false,
-                proxy: config.httpClient.proxy,
+                proxy: null,
                 method: 'GET',
                 followRedirect: false
             }, options),
