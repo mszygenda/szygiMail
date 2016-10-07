@@ -9,13 +9,11 @@ module.exports = function () {
         return getLatestEmail(core.getConfig().emailMockService.url, userEmail, subject).then(function (response) {
             var newlinesRegex = /\n/g;
             var doubleDots = /\.\./g;
-            var result = response.body.replace(/\.\./g, '.');
 
-
-            // Workaround for newline not properly escaped by IDP Email Stub
-            // Since the message is going to be displayed as HTML we're replacing them with <br />
+            // Workaround for newline not properly escaped by IDP Email Stub (replacing them with <br /> as will be html)
+            // Workaround for issue in ISG Email Stub where dots are sometimes duplicated (due to that registration link gets broken)
             return JSON.parse(
-                result.replace(newlinesRegex, "<br />")
+                response.body.replace(doubleDots, '.').replace(newlinesRegex, '<br />')
             )
         })
     };

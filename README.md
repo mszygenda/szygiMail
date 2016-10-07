@@ -104,13 +104,9 @@ prod: 10.133.1.72
 
 All configurable elements sits in:
 
-    config/nft.js - for integration environment
-    config/nftpr1.js - for pr1 environment
-
-
     module.exports = {
         emailMockService: {
-            url: "http://10.124.10.93:5025"
+            url: "http://localhost:5025"
         }
     }
 
