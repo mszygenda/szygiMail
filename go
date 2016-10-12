@@ -1,7 +1,17 @@
 #!/bin/bash
 
+if [ "$1" = "" ]; then
+  TEST_ENV=dev
+fi
+
 npm install
-echo "Enter your password (to get it running on port 80)"
+echo "Killing all existing tunnels on port 8888"
+sudo pkill -f 'ssh -L 8888:'
+
+echo "Setting up tunnel to work against $TEST_ENV environment (it may ask for your azure password)"
+tunnels/$TEST_ENV.sh
+
+echo "Enter your system (NOT AZURE) password (to get it running on port 80)"
 sudo echo "Running on port 80. Add entries to /etc/hosts for easier access"
 echo "http://localhost/email.html"
 echo "http://localhost/mobile.html"
