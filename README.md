@@ -31,13 +31,14 @@ It's a node application so you need to install npm and all project dependencies 
 
 #Starting server
 
-    TEST_ENV=int PORT=80 npm start
+    tunnels/[ENVIRONMENT].sh
+    PORT=80 npm start
 
 If you're using mac or *nix system you can just execute go script (it'll install dependencies and everything)
 
     ./go [ENVIRONMENT]
 
-Where `ENVIRONMENT` is 'int' or 'pr1'
+Where `ENVIRONMENT` is 'dev', 'nft' and so on.
 
 ### WINDOWS Machines
 
@@ -56,9 +57,11 @@ And type those commands
     cd /c
     git clone https://github.com/mszygenda/szygiMail
     cd szygiMail
+    # Command below may ask for you azure credentials
+    tunnels/[ENVIRONMENT].sh
     ./go-nosudo
 
-#### NOTICE: You have to have access to HASS Http proxy to get the stub working correctly (http://10.224.23.8:3128)
+#### NOTICE: You have to have access to Azure boxes to set up the tunnel
 
 #URLs
 
