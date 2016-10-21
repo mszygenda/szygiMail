@@ -31,13 +31,14 @@ It's a node application so you need to install npm and all project dependencies 
 
 #Starting server
 
-    TEST_ENV=int PORT=80 npm start
+    tunnels/[ENVIRONMENT].sh
+    PORT=80 npm start
 
 If you're using mac or *nix system you can just execute go script (it'll install dependencies and everything)
 
     ./go [ENVIRONMENT]
 
-Where `ENVIRONMENT` is 'int' or 'pr1'
+Where `ENVIRONMENT` is 'dev', 'nft' and so on.
 
 ### WINDOWS Machines
 
@@ -56,9 +57,11 @@ And type those commands
     cd /c
     git clone https://github.com/mszygenda/szygiMail
     cd szygiMail
+    # Command below may ask for you azure credentials
+    tunnels/[ENVIRONMENT].sh
     ./go-nosudo
 
-#### NOTICE: You have to have access to HASS Http proxy to get the stub working correctly (http://10.224.23.8:3128)
+#### NOTICE: You have to have access to Azure boxes to set up the tunnel
 
 #URLs
 
@@ -96,22 +99,30 @@ If you want to change the username simply refresh szygiMail and you'll be again 
 
 #Configuration
 
-A ssh tunnel needs to be setUp depending on the environment to be used:
-dev: 10.129.1.72
-nft:10.131.1.72
-nftpr1: 10.131.2.72
-prod: 10.133.1.72
-
 All configurable elements sits in:
 
     module.exports = {
         emailMockService: {
-            url: "http://localhost:5025"
+            url: "http://localhost:8888"
         }
     }
 
-To access those servers http client uses HaSS HTTP proxy. Disable it if you don't need it
+Default configuration points to Email Stub on a local machine so if you want to use it against real environment you'll have to set up a tunnel to appropriate instance.
 
+    dev: 10.129.1.72
+    nft:10.131.1.72
+    nftpr1: 10.131.2.72
+    prod: 10.133.1.72
+
+The go script will automatically set it up for you (default is dev). 
+
+If you're working on Windows machine you'll have to set up the tunnel yourself (there are scripts for that in: tunnels folder)
+
+eg.
+
+     # Set up tunnel to dev environment
+     tunnels/dev.sh
+     
 #Technologies?
 
 It's an expressjs application which offers simple rest interface to pull latest emails from ISG stub.
