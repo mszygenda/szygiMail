@@ -2,11 +2,13 @@
 
 if [ "$1" = "" ]; then
   TEST_ENV=dev
+else
+  TEST_ENV=$1
 fi
 
 npm install
 echo "Killing all existing tunnels on port 8888"
-sudo pkill -f 'ssh -L 8888:'
+pkill -f 'ssh -L 8888:'
 
 echo "Setting up tunnel to work against $TEST_ENV environment (it may ask for your azure password)"
 tunnels/$TEST_ENV.sh
