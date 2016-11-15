@@ -5,6 +5,22 @@ var core = require('../common/core.js');
 var Q = require('q');
 
 module.exports = function () {
+
+    var idam_orgadmin_created='New user added on Common Platform';
+    var idam_orgadmin_rereg='User re-registered on Common Platform';
+    var idam_org_dereg='Organisation deregistered on Common Platform';
+    var idam_org_updated='Organisation details have changed on Common Platform';
+    var idam_org_informlist_updated='Email notification list updated on Common Platform';
+    var idam_org_rereg='Organisation re-registered on Common Platform';
+    var idam_cppadmin_created='New user added on Common Platform';
+    var idam_cppadmin_rereg='User re-registered on Common Platform';
+    var idam_user_created='New user added on Common Platform';
+    var idam_user_dereg='User deregistered on Common Platform';
+    var idam_user_dereg_for_user='Account deregistered on Common Platform';
+    var idam_user_name_updated='Change of name on your Common Platform account';
+    var idam_user_rereg='User re-registered on Common Platform';
+    var idam_user_role_changed='User changed to an Administrator on Common Platform';
+
     var getIdamLatestEmail = function (userEmail, subject) {
         return getLatestEmail(core.getConfig().emailMockService.url, userEmail, subject).then(function (response) {
             var newlinesRegex = /\n/g;
@@ -79,32 +95,38 @@ module.exports = function () {
         return getIdamLatestEmail(userEmail, 'Re-registration of your Common Platform Account');
     };
 
+    this.getInformListUpdatedMail = function (userEmail) {
+        return getIdamLatestEmail(userEmail, idam_org_informlist_updated);
+    };
+
     this.getNewCommonPlatformAdministratorCreatedMail = function (userEmail) {
-        return getIdamLatestEmail(userEmail, 'New Common Platform Administrator Created');
+        return getIdamLatestEmail(userEmail, idam_cppadmin_created);
     };
 
     this.getNewCommonPlatformSupportAdministratorCreatedMail = function (userEmail) {
-        return getIdamLatestEmail(userEmail, 'New Common Platform Support Administrator Created');
+        return getIdamLatestEmail(userEmail, idam_orgadmin_created);
     };
 
-    this.getInformListUpdatedMail = function (userEmail) {
-        return getIdamLatestEmail(userEmail, 'Your Common Platform Organisation Notification List has changed');
-    };
+    console.log('Following email subjects  do not differ any more: ' +
+                 idam_orgadmin_created + idam_cppadmin_created +
+                 idam_orgadmin_rereg   + idam_cppadmin_rereg);
 
     this.getAllEmails = function (userEmail) {
         return Q.all([
             this.getResetPasswordMail(userEmail),
             this.getReregisterMail(userEmail),
             this.getUserRegistrationMail(userEmail),
-            this.getNewCommonPlatformAdministratorCreatedMail(userEmail),
-            this.getNewCommonPlatformSupportAdministratorCreatedMail(userEmail),
             this.getInformListUpdatedMail(userEmail),
-            getIdamLatestEmail(userEmail, 'New Common Platform User Created'),
-            getIdamLatestEmail(userEmail, 'Organisation re-registered on Common Platform'),
-            getIdamLatestEmail(userEmail, 'Organisation deregistered on Common Platform'),
-            getIdamLatestEmail(userEmail, 'Common Platform User Deleted'),
-            getIdamLatestEmail(userEmail, 'Account deregistered on Common Platform'),
-            getIdamLatestEmail(userEmail, 'Change of name on your Common Platform account')
+            getIdamLatestEmail(userEmail, idam_org_dereg),
+            getIdamLatestEmail(userEmail, idam_org_updated),
+            getIdamLatestEmail(userEmail, idam_org_informlist_updated),
+            getIdamLatestEmail(userEmail, idam_org_rereg),
+            getIdamLatestEmail(userEmail, idam_user_created),
+            getIdamLatestEmail(userEmail, idam_user_dereg),
+            getIdamLatestEmail(userEmail, idam_user_dereg_for_user),
+            getIdamLatestEmail(userEmail, idam_user_name_updated),
+            getIdamLatestEmail(userEmail, idam_user_rereg),
+            getIdamLatestEmail(userEmail, idam_user_role_changed)
         ]).then(function (emails) {
             console.log(emails)
             return emails.filter(function (email) {
